@@ -1,6 +1,6 @@
 # IKEEXT DLL Hijacking Exploit Tool
 
-This tool is intended for automatically detect and exploit the IKE and AuthIP IPsec Keyring Modules Service (IKEEXT) Missing DLL vulnerability. 
+This tool is intended for automatically detecting and exploiting the IKE and AuthIP IPsec Keyring Modules Service (IKEEXT) Missing DLL vulnerability. 
 
 ## Description 
 
