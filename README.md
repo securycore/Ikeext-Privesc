@@ -12,15 +12,19 @@ IKEEXT trying to load 'wlbsctrl.dll':
 
 ![Procmon_DLL_Search_Order](https://github.com/itm4n/Ikeext-Privesc/raw/master/screenshots/01_procmon-dll-search-order.png)
 
-
-
 ## Usage 
 
 This PowerShell script consists of 2 Cmdlets: 
-* __Invoke-IkeextCheck__ - Only checks whether the machine is vulnerable. 
-* __Invoke-IkeextExploit__ - If the machine is vulnerable, exploit it by dropping a specifically crafted DLL to the first weak folder.
+* ___Invoke-IkeextCheck___ - Only checks whether the machine is vulnerable. 
+* ___Invoke-IkeextExploit___ - If the machine is vulnerable, exploit it by dropping a specifically crafted DLL to the first weak folder.
 
 ### Detection
+
+The ___Invoke-IkeextCheck___ Cmdlet performs the following checks:
+- __OS version__ - If the OS is Windows Vista/7/8 then the machine is potentially vulnerable. 
+- __IKEEXT status__ and __start type__ - If the service is enabled, the machine is potentially vulnerable (default).
+- __PATH folders with weak permissions__ - If at least one folder is found, the machine is potentially vulnerable.
+- Is ___wlbsctrl.dll___ already present in some system folder (i.e. a folder where DLLs can be loaded from)? - If 'wlbsctrl.dll' doesn't exist, the machine is potentially vulnerable (default).
 
 Syntax:
 ```
@@ -37,16 +41,23 @@ PS C:\temp> Invoke-IkeextCheck -Verbose
 
 ### Exploit 
 
+If the machine is vulnerable, the ___Invoke-IkeextExploit___ Cmdlet will perform the following:
+
+- Depending on the IKEEXT start type: 
+    - ___AUTO___ - The exploit files will be dropped to the first weak PATH folder, provided that the switch '-Force' was set in the command line (safety override).
+    - ___MANUAL___ - The exploit files will be dropped to the first weak PATH folder. Then, the service start will be triggered by trying to open a dummy VPN connection (using rasdial). 
+
+- The following exploit files will be dropped to the first vulnerable folder:
+    - ___wlbsctrl.dll___ - A specifically crafted DLL (32 & 64 bits), that starts a new CMD process and execute a BATCH file. 
+    - ___wlbsctrl_payload.bat___ - The BATCH file that will be executed. 
+
+- BATCH payload:
+    - __Default__ - A default BATCH payload is included in this script. It will use ___net user___ and ___net localgroup___ to create a new user ('hacker' with password 'SuperP@ss123') and add it to the local administrators group (the name of the group is automatically retrieved by the script).
+    - __Custom__ - A custom set of commands can be specified using the parameter ___-Payload .\Path\To\File.txt___ and a file containing one command per line. 
+
 Syntax:
 ```
 Invoke-IkeextExploit [-Verbose] [-Force] [[-Payload] <String>]
-```
-
-This Cmdlet embeds a specifically crafted DLL (32 & 64 bits), that starts a new CMD process. This CMD process executes a BATCH file located in the same folder. The default payload will create a new user and add it to the local administrators group (the name of the group is automatically retrieved by the script). However, a custom payload can also be specified using the parameter ___-Payload___. 
-Default commands: 
-```
-net user hacker SuperP@ss123 /ADD
-net localgroup Administrators hacker /ADD
 ```
 
 Example:
